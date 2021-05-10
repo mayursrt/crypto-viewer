@@ -25,16 +25,8 @@ This app retrieves cryptocurrency prices for the top 100 cryptocurrency from the
 # Page layout
 sid = st.sidebar # Sidebar
 col1, col2 = st.beta_columns((2,1)) # Main page
-
 ## SideBar
 
-
-
-@st.cache
-def scrape_data():
-	cmc = requests.get('https://coinmarketcap.com/')
-	soup = BeautifulSoup(cmc.content, 'html.parser')
-
-	print(soup.title)
+currency_price_unit = col1.selectbox('Select currency for price', ('USD', 'BTC', 'ETH'))
 
 scrape_data()
