@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import time
+from scrape_data import *
 
 # Set Page width
 st.set_page_config(layout="wide")
@@ -20,13 +21,19 @@ st.set_page_config(layout="wide")
 st.title('Crypto Price App')
 st.markdown("""
 This app retrieves cryptocurrency prices for the top 100 cryptocurrency from the **CoinMarketCap**!
+
+-by Mayur Machhi
 """)
 
 # Page layout
 sid = st.sidebar # Sidebar
 col1, col2 = st.beta_columns((2,1)) # Main page
-## SideBar
+## SideBar 
 
-currency_price_unit = col1.selectbox('Select currency for price', ('USD', 'BTC', 'ETH'))
+# currency_price_unit = col1.selectbox('Select currency for price', ('USD', 'btc', 'eth'))
 
-scrape_data()
+
+
+
+df = scrape_data()
+col1.dataframe(df.assign(idx='').set_index('idx'))
