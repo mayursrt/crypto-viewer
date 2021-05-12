@@ -42,8 +42,8 @@ def scrape_data():
     volume_24h.append(i['quote']['USD']['volume24h'])
 
 
-  df = pd.DataFrame(columns=['coin_rank','coin_name', 'coin_symbol','price', 'market_cap', 'percent_change_1h', 'percent_change_24h', 'percent_change_7d', 'volume_24h'])
-  df['coin_rank'] = coin_rank
+  df = pd.DataFrame(columns=['rank','coin_name', 'coin_symbol','price', 'market_cap', 'percent_change_1h', 'percent_change_24h', 'percent_change_7d', 'volume_24h'])
+  df['rank'] = coin_rank
   df['coin_name'] = coin_name
   df['coin_symbol'] = coin_symbol
   df['price'] = price
