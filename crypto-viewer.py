@@ -42,14 +42,6 @@ df_coins = df_selected_coin[:num_coin]
 df_coins.drop(['percent_change_1h', 'percent_change_24h','percent_change_7d'], axis=1, inplace=True)
 df_coins.rename({'rank' : '#', 'coin_name' : 'Name', 'coin_symbol' : 'Symbol', 'price' : 'Price',
 					'market_cap' : 'Market Cap', 'volume_24h' : 'Volume (24h)'},axis=1, inplace=True)
-## Sidebar - Percent change timeframe
-percent_timeframe = sid.selectbox('Percent change time frame',
-                                    ['7d','24h', '1h'])
-percent_dict = {"7d":'percent_change_7d',"24h":'percent_change_24h',"1h":'percent_change_1h'}
-selected_percent_timeframe = percent_dict[percent_timeframe]
-
-## Sidebar - Sorting values
-sort_values = sid.selectbox('Sort values?', ['Yes', 'No'])
 
 col1.subheader('Price Data of Selected Cryptocurrency')
 col1.write('Data Dimension: ' + str(df_selected_coin.shape[0]) + ' rows and ' + str(df_selected_coin.shape[1]) + ' columns.')
@@ -80,6 +72,17 @@ col1.dataframe(df_change)
 
 # Conditional creation of Bar plot (time frame)
 col2.subheader('Bar plot of % Price Change')
+
+col3, col4 = st.beta_columns((1,1))
+## Sidebar - Percent change timeframe
+percent_timeframe = col2.selectbox('Percent change time frame',
+                                    ['7d','24h', '1h'])
+percent_dict = {"7d":'percent_change_7d',"24h":'percent_change_24h',"1h":'percent_change_1h'}
+selected_percent_timeframe = percent_dict[percent_timeframe]
+
+## Sidebar - Sorting values
+sort_values = col2.selectbox('Sort values?', ['Yes', 'No'])
+
 
 if percent_timeframe == '7d':
     if sort_values == 'Yes':
