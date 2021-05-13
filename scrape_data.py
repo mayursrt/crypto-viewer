@@ -53,3 +53,11 @@ def scrape_data():
   df['market_cap'] = market_cap
   df['volume_24h'] = volume_24h
   return df
+
+
+# Download CSV data
+def filedownload(df):
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
+    href = f'<a href="data:file/csv;base64,{b64}" download="crypto.csv">Download CSV File</a>'
+    return href

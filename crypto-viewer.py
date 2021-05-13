@@ -50,17 +50,10 @@ col1.dataframe(df_coins.assign(idx='').set_index('idx'))
 
 # col1.dataframe(df.assign(idx='').set_index('idx'))
 
-# Download CSV data
-# https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
-def filedownload(df):
-    csv = df.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
-    href = f'<a href="data:file/csv;base64,{b64}" download="crypto.csv">Download CSV File</a>'
-    return href
+
 
 col1.markdown(filedownload(df_selected_coin), unsafe_allow_html=True)
 
-#---------------------------------#
 # Preparing data for Bar plot of % Price change
 col1.subheader('Table of % Price Change')
 df_change = pd.concat([df.coin_name, df.coin_symbol, df.percent_change_1h, df.percent_change_24h, df.percent_change_7d], axis=1)
