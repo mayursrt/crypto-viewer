@@ -50,8 +50,6 @@ col1.dataframe(df_coins.assign(idx='').set_index('idx'))
 
 # col1.dataframe(df.assign(idx='').set_index('idx'))
 
-
-
 col1.markdown(filedownload(df_selected_coin), unsafe_allow_html=True)
 
 # Preparing data for Bar plot of % Price change
@@ -61,6 +59,9 @@ df_change = df_change.set_index('coin_symbol')
 df_change['positive_percent_change_1h'] = df_change['percent_change_1h'] > 0
 df_change['positive_percent_change_24h'] = df_change['percent_change_24h'] > 0
 df_change['positive_percent_change_7d'] = df_change['percent_change_7d'] > 0
+
+df_change.rename({'coin_name' : 'Name', 'coin_symbol' : 'Symbol', 'percent_change_1h' : '% Change (1h)', 
+					'percent_change_24h' : '% Change (24h)', 'percent_change_7d' : '% Change (7d)'})
 col1.dataframe(df_change)
 
 # Conditional creation of Bar plot (time frame)
