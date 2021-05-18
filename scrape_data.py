@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import time
+import base64
 
 @st.cache
 def scrape_data():
@@ -52,6 +53,8 @@ def scrape_data():
   df['percent_change_7d'] = percent_change_7d
   df['market_cap'] = market_cap
   df['volume_24h'] = volume_24h
+
+
   return df
 
 
