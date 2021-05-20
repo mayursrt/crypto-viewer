@@ -159,8 +159,37 @@ st.pyplot(plt)
 # Change Dataframe
 st.subheader('Table of % Price Change')
 
-st.dataframe(df_change_show)
+
+def hightlight_price(row):
+    ret1h = ["" for _ in row.index]
+    if row['positive_percent_change_1h']:
+        ret1h[row.index.get_loc('percent_change_1h')] = "color: green"
+    else:
+    	ret1h[row.index.get_loc('percent_change_1h')] = "color: red"
+
+
+    # ret24h = ["" for _ in row.index]
+    # if row['positive_percent_change_24h']:
+    #     ret1h[row.index.get_loc('percent_change_24h')] = "color: green"
+    # else:
+    # 	ret1h[row.index.get_loc('percent_change_24h')] = "color: red"
+
+
+    # ret1h = ["" for _ in row.index]
+    # if row['positive_percent_change_1h']:
+    #     ret1h[row.index.get_loc('percent_change_1h')] = "color: green"
+    # else:
+    # 	ret1h[row.index.get_loc('percent_change_1h')] = "color: red"
+
+
+    return ret1h
+
+st.dataframe(df_change.style.apply(hightlight_price, axis=1))
+
+
+
 #---------------------------------------------------------------------------------------------------
 
 
 
+# col3.dataframe(bottom_n_show.style.set_properties(**{'color': 'red'}, subset=[selected_percent_timeframe]))
