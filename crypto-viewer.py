@@ -121,3 +121,32 @@ st.subheader('Table of % Price Change')
 # Change Dataframe
 st.dataframe(df_change_show)
 #---------------------------------------------------------------------------------------------------
+
+
+
+#---------------------------------------------------------------------------------------------------
+col1, col2 = st.beta_columns((1,1))
+
+top_n = df_change[df_change['positive_percent_change_7d'] == 1]
+top_n = top_n.sort_values(by=['percent_change_7d', 'positive_percent_change_7d'], ascending=False)
+
+plt.figure(figsize=(5,3))
+#plt.subplots_adjust(top = 1, bottom = 0)
+plt.xlabel('Coin Symbol')
+plt.ylabel('Price')
+top_n['percent_change_7d'][:5].plot(kind='bar', color=top_n.positive_percent_change_7d.map({True: 'g', False: 'r'}))
+col1.pyplot(plt)
+
+bottom_n = df_change[df_change['positive_percent_change_7d'] == 0]
+bottom_n = bottom_n.sort_values(by=['percent_change_7d', 'positive_percent_change_7d'])
+
+plt.figure(figsize=(5,3))
+#plt.subplots_adjust(top = 1, bottom = 0)
+plt.xlabel('Coin Symbol')
+plt.ylabel('Price')
+bottom_n['percent_change_7d'][:5].plot(kind='bar', color=bottom_n.positive_percent_change_7d.map({True: 'g', False: 'r'}))
+col2.pyplot(plt)
+
+
+
+#---------------------------------------------------------------------------------------------------
