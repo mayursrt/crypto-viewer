@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
 import requests
 import json
 import time
@@ -64,3 +65,4 @@ def filedownload(df):
     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
     href = f'<a href="data:file/csv;base64,{b64}" download="crypto.csv">Download CSV File</a>'
     return href
+
