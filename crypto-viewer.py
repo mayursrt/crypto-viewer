@@ -20,12 +20,24 @@ st.set_page_config(layout="wide")
 
 #---------------------------------------------------------------------------------------------------
 # Title
-st.title('Crypto Price App')
-st.markdown("""
+
+title_container = st.beta_container()
+col1, col2 = st.beta_columns([1, 5])
+image = Image.open('assets/logo.jpg')
+with title_container:
+    with col1:
+        st.image(image)
+    with col2:
+        st.title('Crypto Price App')
+        st.markdown("""
 This app retrieves cryptocurrency prices for the top 100 cryptocurrency from the **CoinMarketCap**!
 
 -by Mayur Machhi
 """)
+
+
+
+
 #---------------------------------------------------------------------------------------------------
 
 # Page layout
@@ -47,6 +59,8 @@ df_selected_coin = df[ (df['coin_symbol'].isin(selected_coin)) ] # Filtering dat
 num_coin = sid.slider('Display Top N Coins', 1, 100, 50)
 
 df_coins = df_selected_coin[:num_coin]
+
+df_coins['coin_name'] = df_coins['coin_name'].map(str) + '(' + df_coins['coin_symbol'] + ')'
 df_coins.drop(['percent_change_1h', 'percent_change_24h','percent_change_7d'], axis=1, inplace=True)
 df_coins.rename({'rank' : '#', 'coin_name' : 'Name', 'coin_symbol' : 'Symbol', 'price' : 'Price',
 					'market_cap' : 'Market Cap', 'volume_24h' : 'Volume (24h)'},axis=1, inplace=True)
@@ -56,7 +70,7 @@ df_coins = df_coins.set_index('#')
 #---------------------------------------------------------------------------------------------------
 # Coins Dataframe
 st.markdown(f'## **Price Data of Top {num_coin} Cryptocurrencies.**')
-st.dataframe(df_coins)
+st.dataframe(df_coins.style.format({'Price': '{0:,.3f} $', 'Market Cap': '{0:,.0f} $', 'Volume (24h)': '{0:,.0f} $'}))
 #---------------------------------------------------------------------------------------------------
 
 st.markdown(filedownload(df_selected_coin), unsafe_allow_html=True)
@@ -167,6 +181,8 @@ def hightlight_price(row):
     else:
     	ret1h[row.index.get_loc('percent_change_1h')] = "color: red"
 
+
+##https://stackoverflow.com/questions/50724356/highlight-a-column-value-based-off-another-column-value-in-pandas
 
     # ret24h = ["" for _ in row.index]
     # if row['positive_percent_change_24h']:
