@@ -49,18 +49,21 @@ sid = st.sidebar # Sidebar
 
 
 df = scrape_data()
+
+## Sidebar - Number of coins to display
+num_coin = sid.slider('Display Top N Coins', 1, 100, 50)
+
+
 ## Sidebar - Cryptocurrency selections
 sorted_coin = sorted( df['coin_symbol'] )
 selected_coin = sid.multiselect('Cryptocurrency', sorted_coin, sorted_coin)
 
 df_selected_coin = df[ (df['coin_symbol'].isin(selected_coin)) ] # Filtering data
 
-## Sidebar - Number of coins to display
-num_coin = sid.slider('Display Top N Coins', 1, 100, 50)
 
 df_coins = df_selected_coin[:num_coin]
 
-df_coins['coin_name'] = df_coins['coin_name'].map(str) + '(' + df_coins['coin_symbol'] + ')'
+# df_coins['coin_name'] = df_coins['coin_name'].map(str) + '(' + df_coins['coin_symbol'] + ')'
 df_coins.drop(['percent_change_1h', 'percent_change_24h','percent_change_7d'], axis=1, inplace=True)
 df_coins.rename({'rank' : '#', 'coin_name' : 'Name', 'coin_symbol' : 'Symbol', 'price' : 'Price',
 					'market_cap' : 'Market Cap', 'volume_24h' : 'Volume (24h)'},axis=1, inplace=True)
@@ -125,7 +128,7 @@ top_n = df_change[df_change['positive_'+selected_percent_timeframe] == 1]
 top_n = top_n.sort_values(by=[selected_percent_timeframe], ascending=False)
 
 top_n_show = top_n[['coin_name', selected_percent_timeframe]][:top_bottom]
-col1.dataframe(top_n_show.style.set_properties(**{'color': 'green'}, subset=[selected_percent_timeframe]))
+col1.dataframe(top_n_show.style.set_properties(**{'color': 'green'}, subset=[selected_percent_timeframe]).format({selected_percent_timeframe : '+{0:,.3f}%'}))
 
 plt.figure(figsize=(3,2))
 plt.subplots_adjust(top = 1, bottom = 0)
@@ -139,7 +142,7 @@ bottom_n = df_change[df_change['positive_'+selected_percent_timeframe] == 0]
 bottom_n = bottom_n.sort_values(by=[selected_percent_timeframe])
 
 bottom_n_show = bottom_n[['coin_name', selected_percent_timeframe]][:top_bottom]
-col3.dataframe(bottom_n_show.style.set_properties(**{'color': 'red'}, subset=[selected_percent_timeframe]))
+col3.dataframe(bottom_n_show.style.set_properties(**{'color': 'red'}, subset=[selected_percent_timeframe]).format({selected_percent_timeframe : '{0:,.3f}%'}))
 
 plt.figure(figsize=(3,2))
 plt.subplots_adjust(top = 1, bottom = 0)
@@ -183,6 +186,8 @@ def hightlight_price(row):
 
 
 ##https://stackoverflow.com/questions/50724356/highlight-a-column-value-based-off-another-column-value-in-pandas
+#https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html
+# if change is above 0, change colour to green
 
     # ret24h = ["" for _ in row.index]
     # if row['positive_percent_change_24h']:
