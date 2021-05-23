@@ -39,7 +39,6 @@ This app retrieves cryptocurrency prices for the top 100 cryptocurrency from the
 
 
 #---------------------------------------------------------------------------------------------------
-
 # Page layout
 sid = st.sidebar # Sidebar
 # st, st = st.beta_columns((2,1)) # Main page
@@ -51,7 +50,7 @@ sid = st.sidebar # Sidebar
 df = scrape_data()
 
 ## Sidebar - Number of coins to display
-num_coin = sid.slider('Display Top N Coins', 1, 100, 50)
+num_coin = sid.slider('Display Top N Coins', 1, 100, 100)
 
 
 ## Sidebar - Cryptocurrency selections
@@ -124,10 +123,11 @@ col2.empty()
 
 col1, col2, col3, col4 = st.beta_columns((1,0.5,1,0.5))
 
-top_n = df_change[df_change['positive_'+selected_percent_timeframe] == 1]
+top_n = df_change[df_change[selected_percent_timeframe] > 0]
 top_n = top_n.sort_values(by=[selected_percent_timeframe], ascending=False)
 
 top_n_show = top_n[['coin_name', selected_percent_timeframe]][:top_bottom]
+top_n_show = top_n_show.rename({'coin_name' : 'Name'}, axis=1)
 col1.dataframe(top_n_show.style.set_properties(**{'color': 'green'}, subset=[selected_percent_timeframe]).format({selected_percent_timeframe : '+{0:,.3f}%'}))
 
 plt.figure(figsize=(3,2))
@@ -138,10 +138,11 @@ top_n[selected_percent_timeframe][:top_bottom].plot(kind='bar', color=top_n['pos
 col2.pyplot(plt)
 
 
-bottom_n = df_change[df_change['positive_'+selected_percent_timeframe] == 0]
+bottom_n = df_change[df_change[selected_percent_timeframe] < 0]
 bottom_n = bottom_n.sort_values(by=[selected_percent_timeframe])
 
 bottom_n_show = bottom_n[['coin_name', selected_percent_timeframe]][:top_bottom]
+bottom_n_show = bottom_n_show.rename({'coin_name' : 'Name'}, axis=1)
 col3.dataframe(bottom_n_show.style.set_properties(**{'color': 'red'}, subset=[selected_percent_timeframe]).format({selected_percent_timeframe : '{0:,.3f}%'}))
 
 plt.figure(figsize=(3,2))
@@ -150,7 +151,6 @@ plt.xlabel('Coin Symbol')
 plt.ylabel('Price')
 bottom_n[selected_percent_timeframe][:top_bottom].plot(kind='bar', color=bottom_n['positive_'+selected_percent_timeframe].map({True: 'g', False: 'r'}))
 col4.pyplot(plt)
-
 
 #---------------------------------------------------------------------------------------------------
 
@@ -176,39 +176,18 @@ st.pyplot(plt)
 # Change Dataframe
 st.subheader('Table of % Price Change')
 
-
-def hightlight_price(row):
-    ret1h = ["" for _ in row.index]
-    if row['positive_percent_change_1h']:
-        ret1h[row.index.get_loc('percent_change_1h')] = "color: green"
+def color(val):
+    if val < 0:
+        c = 'red'
+    elif val > 0:
+        c = 'green'
     else:
-    	ret1h[row.index.get_loc('percent_change_1h')] = "color: red"
+        c = 'yellow'
+    return 'color: %s' % c
 
 
-##https://stackoverflow.com/questions/50724356/highlight-a-column-value-based-off-another-column-value-in-pandas
-#https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html
-# if change is above 0, change colour to green
-
-    # ret24h = ["" for _ in row.index]
-    # if row['positive_percent_change_24h']:
-    #     ret1h[row.index.get_loc('percent_change_24h')] = "color: green"
-    # else:
-    # 	ret1h[row.index.get_loc('percent_change_24h')] = "color: red"
-
-
-    # ret1h = ["" for _ in row.index]
-    # if row['positive_percent_change_1h']:
-    #     ret1h[row.index.get_loc('percent_change_1h')] = "color: green"
-    # else:
-    # 	ret1h[row.index.get_loc('percent_change_1h')] = "color: red"
-
-
-    return ret1h
-
-st.dataframe(df_change.style.apply(hightlight_price, axis=1))
-
-
-
+st.dataframe(df_change_show.style.applymap(color, subset=['Percent Change (1h)', 'Percent Change (24h)', 'Percent Change (7d)']).
+	format({'Percent Change (1h)': '{:.2f}%', 'Percent Change (24h)': '{:.2f}%', 'Percent Change (7d)': '{:.2f}%'}))
 #---------------------------------------------------------------------------------------------------
 
 
