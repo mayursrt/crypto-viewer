@@ -126,32 +126,38 @@ col1, col2, col3, col4 = st.beta_columns((1,0.5,1,0.5))
 top_n = df_change[df_change[selected_percent_timeframe] > 0]
 top_n = top_n.sort_values(by=[selected_percent_timeframe], ascending=False)
 
-top_n_show = top_n[['coin_name', selected_percent_timeframe]][:top_bottom]
-top_n_show = top_n_show.rename({'coin_name' : 'Name'}, axis=1)
-col1.dataframe(top_n_show.style.set_properties(**{'color': 'green'}, subset=[selected_percent_timeframe]).format({selected_percent_timeframe : '+{0:,.3f}%'}))
+if top_n.empty == False:
+	top_n_show = top_n[['coin_name', selected_percent_timeframe]][:top_bottom]
+	top_n_show = top_n_show.rename({'coin_name' : 'Name'}, axis=1)
+	col1.dataframe(top_n_show.style.set_properties(**{'color': 'green'}, subset=[selected_percent_timeframe]).format({selected_percent_timeframe : '+{0:,.3f}%'}))
 
-plt.figure(figsize=(3,2))
-plt.subplots_adjust(top = 1, bottom = 0)
-plt.xlabel('Coin Symbol')
-plt.ylabel('Price')
-top_n[selected_percent_timeframe][:top_bottom].plot(kind='bar', color=top_n['positive_'+selected_percent_timeframe].map({True: 'g', False: 'r'}))
-col2.pyplot(plt)
 
+	plt.figure(figsize=(3,2))
+	plt.subplots_adjust(top = 1, bottom = 0)
+	plt.xlabel('Coin Symbol')
+	plt.ylabel('Price')
+	top_n[selected_percent_timeframe][:top_bottom].plot(kind='bar', color=top_n['positive_'+selected_percent_timeframe].map({True: 'g', False: 'r'}))
+	col2.pyplot(plt)
+else:
+	col1.markdown(f'No Gainers for selected Timeframe')
 
 bottom_n = df_change[df_change[selected_percent_timeframe] < 0]
 bottom_n = bottom_n.sort_values(by=[selected_percent_timeframe])
 
-bottom_n_show = bottom_n[['coin_name', selected_percent_timeframe]][:top_bottom]
-bottom_n_show = bottom_n_show.rename({'coin_name' : 'Name'}, axis=1)
-col3.dataframe(bottom_n_show.style.set_properties(**{'color': 'red'}, subset=[selected_percent_timeframe]).format({selected_percent_timeframe : '{0:,.3f}%'}))
+if bottom_n.empty == False:
 
-plt.figure(figsize=(3,2))
-plt.subplots_adjust(top = 1, bottom = 0)
-plt.xlabel('Coin Symbol')
-plt.ylabel('Price')
-bottom_n[selected_percent_timeframe][:top_bottom].plot(kind='bar', color=bottom_n['positive_'+selected_percent_timeframe].map({True: 'g', False: 'r'}))
-col4.pyplot(plt)
+	bottom_n_show = bottom_n[['coin_name', selected_percent_timeframe]][:top_bottom]
+	bottom_n_show = bottom_n_show.rename({'coin_name' : 'Name'}, axis=1)
+	col3.dataframe(bottom_n_show.style.set_properties(**{'color': 'red'}, subset=[selected_percent_timeframe]).format({selected_percent_timeframe : '{0:,.3f}%'}))
 
+	plt.figure(figsize=(3,2))
+	plt.subplots_adjust(top = 1, bottom = 0)
+	plt.xlabel('Coin Symbol')
+	plt.ylabel('Price')
+	bottom_n[selected_percent_timeframe][:top_bottom].plot(kind='bar', color=bottom_n['positive_'+selected_percent_timeframe].map({True: 'g', False: 'r'}))
+	col4.pyplot(plt)
+else:
+	col3.markdown('No Losers for selected Timeframe')
 #---------------------------------------------------------------------------------------------------
 
 
