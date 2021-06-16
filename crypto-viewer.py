@@ -206,6 +206,7 @@ st.dataframe(df_change_show.style.applymap(color, subset=['Percent Change (1h)',
 #Footer
 
 footer="""<style>
+#MainMenu {visibility: hidden;}
 a:link , a:visited{
 color: blue;
 background-color: transparent;
