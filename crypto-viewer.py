@@ -199,3 +199,43 @@ st.dataframe(df_change_show.style.applymap(color, subset=['Percent Change (1h)',
 
 
 # col3.dataframe(bottom_n_show.style.set_properties(**{'color': 'red'}, subset=[selected_percent_timeframe]))
+
+
+
+#----------------------------------------------------------------------------------------------------------------------------
+#Footer
+
+footer="""<style>
+a:link , a:visited{
+color: blue;
+background-color: transparent;
+text-decoration: underline;
+}
+
+a:hover,  a:active {
+color: red;
+background-color: transparent;
+text-decoration: underline;
+}
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: white;
+color: black;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Made with ❤️ by <a href='https://github.com/mayursrt'>Mayur</a> 
+
+</p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True)
+
+# <a style='display: block; text-align: center;' href="https://github.com/mayursrt" target="_blank">Mayur Machhi</a>
+
+#----------------------------------------------------------------------------------------------------------------------------
