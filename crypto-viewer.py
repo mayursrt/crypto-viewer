@@ -214,7 +214,7 @@ text-decoration: underline;
 }
 
 a:hover,  a:active {
-color: red;
+color: black;
 background-color: transparent;
 text-decoration: underline;
 }
@@ -230,7 +230,7 @@ text-align: center;
 }
 </style>
 <div class="footer">
-<p>Made with ❤️ by <a href='https://github.com/mayursrt'>Mayur</a> 
+<p>Made in Streamlit with ❤️ by <a href='https://github.com/mayursrt'>Mayur</a> 
 
 </p>
 </div>
